@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg1cwmjl7f56x"]
+
+[ext_resource type="Texture2D" uid="uid://c8qurlnc1gd6d" path="res://assets/sprites/collectibles/tileRed_60.png" id="1_h6dkl"]
+[ext_resource type="Script" path="res://scripts/collect.gd" id="1_qul4x"]
+[ext_resource type="AudioStream" uid="uid://deg5x4nu83tb3" path="res://assets/audio/sfx/positive-1.wav" id="3_4xqaf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a0v16"]
+radius = 67.082
+
+[node name="Heart" type="Area2D"]
+scale = Vector2(0.25, 0.25)
+collision_layer = 0
+script = ExtResource("1_qul4x")
+speed = 90
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_h6dkl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a0v16")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_4xqaf")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]
+[connection signal="finished" from="Sound" to="." method="_on_sound_finished"]

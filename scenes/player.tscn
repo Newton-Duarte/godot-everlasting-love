@@ -1,0 +1,118 @@
+[gd_scene load_steps=18 format=3 uid="uid://bog860sncojfn"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_lsk7y"]
+[ext_resource type="Texture2D" uid="uid://bpncs1cgswnqx" path="res://assets/sprites/character/female/character_femalePerson_idle.png" id="1_rnjo1"]
+[ext_resource type="Texture2D" uid="uid://ckd4hrxjj3ww7" path="res://assets/sprites/character/female/character_femalePerson_cheer0.png" id="1_vveaw"]
+[ext_resource type="Texture2D" uid="uid://cyhnr7t824rvf" path="res://assets/sprites/character/female/character_femalePerson_cheer1.png" id="2_2ot0w"]
+[ext_resource type="Texture2D" uid="uid://du7oeqc5xyjwr" path="res://assets/sprites/character/female/character_femalePerson_hit.png" id="3_tckxx"]
+[ext_resource type="Texture2D" uid="uid://b3dwtvo8rl4lh" path="res://assets/sprites/character/female/character_femalePerson_behindBack.png" id="5_005yj"]
+[ext_resource type="Texture2D" uid="uid://bm8skopkralal" path="res://assets/sprites/character/female/character_femalePerson_walk0.png" id="6_wdbfg"]
+[ext_resource type="Texture2D" uid="uid://od0yklw82n4o" path="res://assets/sprites/character/female/character_femalePerson_fall.png" id="7_fogwf"]
+[ext_resource type="Texture2D" uid="uid://bhn77pjxydmgq" path="res://assets/sprites/character/female/character_femalePerson_walk1.png" id="7_wixkv"]
+[ext_resource type="Texture2D" uid="uid://b4nybk5pnny36" path="res://assets/sprites/character/female/character_femalePerson_walk2.png" id="8_hnt1a"]
+[ext_resource type="Texture2D" uid="uid://du04qpepjyqw1" path="res://assets/sprites/character/female/character_femalePerson_walk3.png" id="9_xp1wi"]
+[ext_resource type="Texture2D" uid="uid://47s86u1jwuev" path="res://assets/sprites/character/female/character_femalePerson_walk4.png" id="10_2v3ej"]
+[ext_resource type="Texture2D" uid="uid://bp37oln0ehpk1" path="res://assets/sprites/character/female/character_femalePerson_walk5.png" id="11_f08ds"]
+[ext_resource type="Texture2D" uid="uid://kphweyl7weg2" path="res://assets/sprites/character/female/character_femalePerson_walk6.png" id="12_adhn4"]
+[ext_resource type="Texture2D" uid="uid://bejn6b2cidujh" path="res://assets/sprites/character/female/character_femalePerson_walk7.png" id="13_vndp2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_silqk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_vveaw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_2ot0w")
+}],
+"loop": true,
+"name": &"cheer",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_tckxx")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_rnjo1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.5,
+"texture": ExtResource("5_005yj")
+}, {
+"duration": 1.5,
+"texture": ExtResource("1_rnjo1")
+}],
+"loop": true,
+"name": &"idle_long",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_fogwf")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_wdbfg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wixkv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hnt1a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_xp1wi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2v3ej")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_f08ds")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_adhn4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_vndp2")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k0my8"]
+radius = 24.0
+height = 88.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_lsk7y")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_silqk")
+animation = &"cheer"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 20)
+shape = SubResource("CapsuleShape2D_k0my8")
+
+[node name="IdleLongTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="IdleLongTimer" to="." method="_on_idle_long_timer_timeout"]

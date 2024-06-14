@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://bdr8o2p5prcha"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_8wd6j"]
+[ext_resource type="PackedScene" uid="uid://bog860sncojfn" path="res://scenes/player.tscn" id="1_k6woh"]
+[ext_resource type="PackedScene" uid="uid://ba003lddimrxg" path="res://scenes/floor.tscn" id="2_5fy52"]
+[ext_resource type="PackedScene" uid="uid://c2kl8jd4je6la" path="res://scenes/hud.tscn" id="4_04g0g"]
+[ext_resource type="PackedScene" uid="uid://bd6n25vo61iy3" path="res://scenes/end_hud.tscn" id="5_1mhnj"]
+[ext_resource type="AudioStream" uid="uid://clj8h5ws2ua1c" path="res://assets/audio/music/childish-theme-loop-4.wav" id="5_7evuq"]
+[ext_resource type="PackedScene" uid="uid://d0xih2b1cewah" path="res://scenes/scrolling_background.tscn" id="6_dteew"]
+[ext_resource type="PackedScene" uid="uid://csbd15r65sv2m" path="res://scenes/wall.tscn" id="8_3s1yd"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_8wd6j")
+
+[node name="Player" parent="." instance=ExtResource("1_k6woh")]
+position = Vector2(242, 790)
+
+[node name="Floor" parent="." instance=ExtResource("2_5fy52")]
+position = Vector2(0, 864)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hud" parent="CanvasLayer" instance=ExtResource("4_04g0g")]
+
+[node name="EndHud" parent="CanvasLayer" instance=ExtResource("5_1mhnj")]
+
+[node name="CollectiblesHolder" type="Node" parent="."]
+
+[node name="SpawnL" type="Marker2D" parent="."]
+position = Vector2(72, 300)
+
+[node name="SpawnR" type="Marker2D" parent="."]
+position = Vector2(408, 300)
+
+[node name="SpawnCollectibleTimer" type="Timer" parent="."]
+wait_time = 0.75
+autostart = true
+
+[node name="GameTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7evuq")
+autoplay = true
+
+[node name="ScrollingBackground" parent="." instance=ExtResource("6_dteew")]
+
+[node name="WallL" parent="." instance=ExtResource("8_3s1yd")]
+
+[node name="WallR" parent="." instance=ExtResource("8_3s1yd")]
+position = Vector2(500, 0)
+
+[connection signal="timeout" from="SpawnCollectibleTimer" to="." method="_on_spawn_collectible_timer_timeout"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

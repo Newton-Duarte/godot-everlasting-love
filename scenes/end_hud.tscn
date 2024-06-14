@@ -1,0 +1,152 @@
+[gd_scene load_steps=9 format=3 uid="uid://bd6n25vo61iy3"]
+
+[ext_resource type="Script" path="res://scripts/end_hud.gd" id="1_372xu"]
+[ext_resource type="LabelSettings" uid="uid://dxunrvlgh4sls" path="res://assets/48_title.tres" id="1_cgmyi"]
+[ext_resource type="Texture2D" uid="uid://c8qurlnc1gd6d" path="res://assets/sprites/collectibles/tileRed_60.png" id="2_1cntk"]
+[ext_resource type="Texture2D" uid="uid://dxu5do0q1p8h1" path="res://assets/sprites/collectibles/coin_11.png" id="3_xbknb"]
+[ext_resource type="LabelSettings" uid="uid://b6bvimxbg7gcv" path="res://assets/72_title.tres" id="4_5j3bm"]
+[ext_resource type="LabelSettings" uid="uid://wly5j63aafgx" path="res://assets/24_title.tres" id="6_hwt5x"]
+
+[sub_resource type="Animation" id="Animation_wyij5"]
+resource_name = "flash"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MC/VBoxContainer/PlayLabel:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qvguj"]
+_data = {
+"flash": SubResource("Animation_wyij5")
+}
+
+[node name="EndHud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_372xu")
+
+[node name="MC" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MC"]
+layout_mode = 2
+theme_override_constants/separation = 110
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MC/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="MC/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Tempo!"
+label_settings = ExtResource("1_cgmyi")
+horizontal_alignment = 1
+
+[node name="HeartsContainer" type="HBoxContainer" parent="MC/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HeartIcon" type="TextureRect" parent="MC/VBoxContainer/VBoxContainer/HeartsContainer"]
+layout_mode = 2
+texture = ExtResource("2_1cntk")
+expand_mode = 3
+
+[node name="HeartsText" type="Label" parent="MC/VBoxContainer/VBoxContainer/HeartsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_cgmyi")
+
+[node name="CoinsContainer" type="HBoxContainer" parent="MC/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="CoinsIcon" type="TextureRect" parent="MC/VBoxContainer/VBoxContainer/CoinsContainer"]
+layout_mode = 2
+texture = ExtResource("3_xbknb")
+expand_mode = 3
+
+[node name="CoinsText" type="Label" parent="MC/VBoxContainer/VBoxContainer/CoinsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_cgmyi")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MC/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="MC/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Score:"
+label_settings = ExtResource("1_cgmyi")
+horizontal_alignment = 1
+
+[node name="ScoreText" type="Label" parent="MC/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "9999999"
+label_settings = ExtResource("4_5j3bm")
+horizontal_alignment = 1
+
+[node name="PlayLabel" type="Label" parent="MC/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Click To Play"
+label_settings = ExtResource("1_cgmyi")
+horizontal_alignment = 1
+
+[node name="LoveContainer" type="HBoxContainer" parent="MC/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="LoveLabel" type="Label" parent="MC/VBoxContainer/LoveContainer"]
+layout_mode = 2
+text = "Te amo Rita"
+label_settings = ExtResource("6_hwt5x")
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MC/VBoxContainer/LoveContainer"]
+layout_mode = 2
+texture = ExtResource("2_1cntk")
+expand_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qvguj")
+}
+autoplay = "flash"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
